@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light only">
+<meta name="theme-color" content="#FBF7F2">
+<title>순간수집가 · iPhone Snap</title>
+<meta name="description" content="지나가면 다시 오지 않을 순간을 수집합니다. 아이폰 스냅 순간수집가.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Serif+KR:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #FBF7F2;
+    --bg-glow: #F5EBE0;
+    --ink: #3F2A1E;
+    --soft: #6B5040;
+    --faint: #9A8272;
+    --line: #DCCAB9;
+    --btn: #6B4E3D;
+    --title: "Gowun Batang", "Noto Serif KR", "AppleMyungjo", serif;
+    --serif: "Noto Serif KR", "Gowun Batang", "AppleMyungjo", "Batang", serif;
+    --latin: "Cormorant Garamond", Georgia, serif;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *, *::before, *::after { box-sizing: inherit; margin: 0; padding: 0; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); height: 100%; background: var(--bg); }
+  body {
+    min-height: 100%;
+    background: var(--bg);
+    background-image: radial-gradient(ellipse 120% 50% at 50% 0%, var(--bg-glow) 0%, transparent 75%);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    justify-content: center;
+  }
+  main {
+    width: 100%;
+    max-width: 440px;
+    padding: 68px 30px 44px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+  .view { display: none; width: 100%; flex: 1; flex-direction: column; align-items: center; }
+  .view.on { display: flex; animation: arrive .9s cubic-bezier(.2,.7,.2,1) both; }
+
+  /* shared title block */
+  .title {
+    font-family: var(--title);
+    font-weight: 700;
+    font-size: 46px;
+    letter-spacing: .06em;
+    line-height: 1.15;
+    color: var(--ink);
+  }
+  .sub {
+    margin-top: 12px;
+    font-family: var(--latin);
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: .5em;
+    padding-left: .5em;
+    color: var(--soft);
+  }
+
+  /* home */
+  .mark {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: .6em;
+    padding-left: .6em;
+    color: var(--faint);
+    margin-bottom: 26px;
+  }
+  .rule { width: 1px; height: 40px; background: var(--line); margin: 36px 0 30px; }
+  .line { font-size: 16px; font-weight: 600; line-height: 2; word-break: keep-all; }
+  .info { margin-top: 24px; font-size: 14px; font-weight: 500; line-height: 1.95; color: var(--soft); }
+
+  nav { width: 100%; margin-top: 48px; display: flex; flex-direction: column; gap: 12px; }
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 18px 20px;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    background: #FFFDFB;
+    color: var(--ink);
+    text-decoration: none;
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    cursor: pointer;
+    transition: background .3s ease, border-color .3s ease;
+  }
+  .btn.ig { display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .btn.ig .ico { width: 18px; height: 18px; flex: none; }
+  .btn.primary { background: var(--btn); border-color: var(--btn); color: #FBF7F2; }
+  .btn:hover { border-color: var(--soft); }
+  .btn.primary:hover { background: #5A4033; }
+  .btn:focus-visible, .back:focus-visible { outline: 1px solid var(--soft); outline-offset: 4px; }
+
+  /* products */
+  .back {
+    align-self: flex-start;
+    background: none;
+    border: 0;
+    font-family: var(--serif);
+    font-size: 13px;
+    color: var(--soft);
+    font-weight: 600;
+    letter-spacing: .08em;
+    cursor: pointer;
+    padding: 6px 0;
+    margin: -40px 0 24px;
+    text-decoration: none;
+  }
+  .hr { width: 100%; height: 1px; background: var(--line); margin: 30px 0 28px; }
+  h2 {
+    font-family: var(--title);
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: .12em;
+    padding-left: .12em;
+    margin-bottom: 18px;
+  }
+  dl { width: 100%; }
+  .row {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+  }
+  .row:last-child { border-bottom: 0; }
+  dt {
+    font-family: var(--title);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--soft);
+    text-align: center;
+    border-right: 1px solid var(--line);
+    padding: 4px 0;
+    letter-spacing: .04em;
+  }
+  dd {
+    padding-left: 22px;
+    font-family: var(--title);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.7;
+    color: var(--ink);
+    word-break: keep-all;
+  }
+  dd .big { font-size: 22px; letter-spacing: .02em; }
+  dd small { display: block; font-size: 14px; color: var(--soft); }
+  .deal {
+    width: 100%;
+    margin-top: 26px;
+    padding: 30px 26px 26px;
+    background: #F4EADF;
+    border: 1px solid #E6D5C3;
+    border-radius: 2px;
+  }
+  .deal-head {
+    font-family: var(--title);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: .3em;
+    padding-left: .3em;
+    color: var(--soft);
+  }
+  .deal-total {
+    margin-top: 8px;
+    font-family: var(--title);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: .04em;
+  }
+  .deal-total strong {
+    font-weight: 700;
+    font-size: 40px;
+    letter-spacing: .02em;
+    margin: 0 2px;
+    color: #6E3F28;
+  }
+  .deal ul { list-style: none; margin-top: 22px; border-top: 1px solid #E2CFBC; }
+  .deal li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 12px 4px;
+    border-bottom: 1px dashed #E2CFBC;
+    font-family: var(--title);
+    font-size: 15.5px;
+    font-weight: 700;
+  }
+  .deal li span { color: var(--ink); }
+  .deal li em { font-style: normal; color: var(--soft); }
+  .deal li em::before { content: "−"; margin-right: 2px; }
+  .deal-note {
+    margin-top: 18px;
+    font-family: var(--title);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--soft);
+    letter-spacing: .06em;
+  }
+  .closing {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    color: var(--soft);
+    line-height: 1.9;
+    word-break: keep-all;
+  }
+  .sig {
+    margin-top: 10px;
+    font-family: var(--latin);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .42em;
+    padding-left: .42em;
+    color: var(--faint);
+  }
+  .products nav { margin-top: 36px; }
+
+  footer {
+    margin-top: auto;
+    padding-top: 56px;
+    font-family: var(--latin);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .3em;
+    color: var(--faint);
+  }
+
+  @keyframes arrive { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .view.on { animation: none; } }
+  @media (max-width: 360px) {
+    main { padding: 56px 22px 40px; }
+    .title { font-size: 40px; }
+    .row { grid-template-columns: 84px 1fr; }
+    dd { padding-left: 16px; font-size: 14.5px; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <!-- HOME -->
+  <section class="view" id="home" aria-label="순간수집가">
+    <p class="mark">瞬 · 蒐</p>
+    <h1 class="title">순간수집가</h1>
+    <p class="sub">iPhone Snap</p>
+
+    <div class="rule" aria-hidden="true"></div>
+
+    <p class="line">지나가면 다시 오지 않을<br>순간을 수집합니다.</p>
+    <p class="info">iPhone 16 Pro, 17 Pro 무음 촬영<br>여성 1인 작가가 함께합니다</p>
+
+    <nav>
+      <a class="btn primary" href="#products">상품 구성 보기</a>
+      <a class="btn primary" href="https://form.naver.com/response/Ef9koVlDTVg" target="_blank" rel="noopener">예약하기</a>
+      <a class="btn" href="http://pf.kakao.com/_JxnAFX/chat" target="_blank" rel="noopener">카카오톡으로 문의하기</a>
+      <a class="btn ig" href="https://www.instagram.com/soonsoo.iphone" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/></svg><span>인스타그램</span></a>
+    </nav>
+
+    <footer>SOONSOO</footer>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="view products" id="products" aria-label="상품 안내">
+    <a class="back" href="#home">‹ 처음으로</a>
+
+    <h1 class="title">순간수집가</h1>
+    <p class="sub">iPhone Snap</p>
+
+    <div class="hr" aria-hidden="true"></div>
+
+    <h2>상품안내</h2>
+    <dl>
+      <div class="row"><dt>촬영비용</dt><dd><span class="big">25만원</span><small>할인 적용 시 최대 20만원</small></dd></div>
+      <div class="row"><dt>촬영시간</dt><dd>메인스냅 사진 촬영시간부터<br>돌잡이 종료 시까지</dd></div>
+      <div class="row"><dt>아이폰 기종</dt><dd>16 Pro, 17 Pro<small>무음 촬영</small></dd></div>
+      <div class="row"><dt>촬영 컷수</dt><dd>사진 500장 이상<br>짧은 영상 10개 이상</dd></div>
+      <div class="row"><dt>사진 제공</dt><dd>원본 전체 24시간 이내<br>보정본 15장 3일 이내</dd></div>
+    </dl>
+
+    <div class="deal" aria-label="할인 혜택">
+      <p class="deal-head">할인 혜택</p>
+      <p class="deal-total">총 <strong>5만원</strong> 할인</p>
+      <ul>
+        <li><span>예약 후기</span><em>1만원</em></li>
+        <li><span>초상권 동의</span><em>1만원</em></li>
+        <li><span>짝꿍 할인</span><em>1만원</em></li>
+        <li><span>당일 예약</span><em>1만원</em></li>
+        <li><span>후기 작성</span><em>1만원</em></li>
+      </ul>
+      <p class="deal-note">25만원 → 최대 20만원</p>
+    </div>
+
+    <div class="hr" aria-hidden="true"></div>
+
+    <p class="closing">소중한 순간을, 자연스럽고 담백하게 담아드립니다.</p>
+    <p class="sig">IPHONE SNAP BY SUNGANSUJIBGA</p>
+
+    <nav>
+      <a class="btn primary" href="https://form.naver.com/response/Ef9koVlDTVg" target="_blank" rel="noopener">예약하기</a>
+      <a class="btn" href="http://pf.kakao.com/_JxnAFX/chat" target="_blank" rel="noopener">카카오톡으로 문의하기</a>
+      <a class="btn" href="#home">처음으로</a>
+    </nav>
+  </section>
+
+</main>
+<script>
+  function show() {
+    var id = location.hash === '#products' ? 'products' : 'home';
+    document.querySelectorAll('.view').forEach(function (v) { v.classList.toggle('on', v.id === id); });
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', show);
+  show();
+</script>
+</body>
+</html>
